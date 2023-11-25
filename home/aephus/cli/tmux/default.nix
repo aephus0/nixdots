@@ -39,6 +39,7 @@ in {
       set -g pane-active-border-style "bg=default,fg=green"
 
       set-option -sa terminal-features ",alacritty:RGB"
+      set-option -sa terminal-overrides ",xterm*:Tc"
       set -g default-terminal "screen-256color"
 
       set -g detach-on-destroy off
@@ -57,6 +58,7 @@ in {
       set -g status-bg default
       set -g status-fg white
       set -g status-style "fg=white,bg=default"
+
 
     '';
     plugins = with pkgs; [
@@ -84,6 +86,14 @@ in {
       }
       {
         plugin = tmuxPlugins.vim-tmux-navigator;
+      }
+      {
+        plugin = tmuxPlugins.catppuccin;
+        extraConfig = 
+        ''
+          set -g @catppuccin_flavour 'mocha'
+          set -g @catppuccin_pill_theme_enabled on
+        '';
       }
     ];
   };

@@ -87,7 +87,7 @@
     dhcpcd.wait = "background";
     # avoid checking if IP is already taken to boot a few seconds faster
     dhcpcd.extraConfig = "noarp";
-    hostName = "nixos"; # Define your hostname.
+    hostName = "neidus"; # Define your hostname.
     # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     # Configure network proxy if necessary
     # proxy.default = "http://user:password@proxy:port/";
@@ -213,7 +213,8 @@
       # Enable the X11 windowing system.
       enable = true;
       displayManager = {
-        gdm.enable = true;
+        # gdm.enable = true;
+        sddm.enable = true;
       };
       desktopManager = {
         xfce.enable = true;
@@ -334,6 +335,39 @@
     ];
   };
 
+services.postgresql = {
+  enable = true;
+  ensureDatabases = [ "aephus" ];
+  ensureUsers = [
+    {
+      name = "aephus";
+      ensurePermissions = {
+        "DATABASE aephus" = "ALL PRIVILEGES";
+      };
+    }
+  ];
+  enableTCPIP = true;
+  # port = 5432;
+  # authentication = pkgs.lib.mkOverride 10 ''
+  #   #...
+  #   #type database DBuser origin-address auth-method
+  #   # ipv4
+  #   host  all      all     127.0.0.1/32   trust
+  # '';
+  initialScript = pkgs.writeText "backend-initScript" ''
+    CREATE ROLE aephus WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'aephus';
+    GRANT postgres TO aephus
+    CREATE DATABASE aephus;
+    GRANT ALL PRIVILEGES ON DATABASE aephus TO aephus;
+  '';
+};
+
+services.pgadmin = {
+  enable = true;
+  initialEmail = "wiggo@mbwb.se";
+  initialPasswordFile = ./postgrespass;
+  openFirewall = true;
+};
   # Open ports in the firewall.
   networking = {
     firewall = {

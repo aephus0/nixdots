@@ -40,6 +40,8 @@
            shfmt # shell
            nodejs # take a guess
            marksman # markdown language server
+           vscode-extensions.prisma.prisma
+           # prisma-language-server
            nodePackages.pyright
            nodePackages.prettier
            nodePackages.stylelint
@@ -117,6 +119,8 @@
                tree-sitter-zig
                tree-sitter-dockerfile
                tree-sitter-markdown
+               tree-sitter-svelte
+               tree-sitter-prisma
              ]))
     ];
 

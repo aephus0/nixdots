@@ -70,9 +70,10 @@
     google-chrome
 
     # Socials
-    (pkgs.discord.override {
-      withVencord = true;
-    })
+    # (discord.override {
+    #   withVencord = true;
+    # })
+    discord
 
     # Note taking
     notion-app-enhanced
